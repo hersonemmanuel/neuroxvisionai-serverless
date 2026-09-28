@@ -15,6 +15,17 @@ COPY scripts /app/scripts
 COPY models /app/models
 COPY api /app/api
 
+RUN echo "========================================" && \
+    echo "CHECKING SERVERLESS MODEL FILES" && \
+    echo "========================================" && \
+    find /app/models -maxdepth 3 -type f -printf "%p  %s bytes\n" && \
+    echo "----------------------------------------" && \
+    test -s /app/models/unified_classifier/best_unified_classifier.pt && \
+    echo "Unified classifier: FOUND" && \
+    test -s /app/models/glioma_grade/best_glioma_grade_model.pt && \
+    echo "Glioma grade model: FOUND" && \
+    echo "MODEL CHECK: PASS"
+
 RUN python - <<'PY'
 import torch, torchvision, monai, nibabel, boto3, PIL, reportlab, runpod
 print("torch", torch.__version__)
