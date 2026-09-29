@@ -31,6 +31,17 @@ COPY scripts /app/scripts
 COPY models /app/models
 COPY api /app/api
 
+# Copy classification checkpoints into their runtime locations
+RUN mkdir -p \
+    /app/models/unified_classifier \
+    /app/models/glioma_grade
+
+COPY best_unified_classifier.pt \
+    /app/models/unified_classifier/best_unified_classifier.pt
+
+COPY best_glioma_grade_model.pt \
+    /app/models/glioma_grade/best_glioma_grade_model.pt
+
 
 # ============================================================
 # VERIFY REQUIRED MODEL CHECKPOINTS
